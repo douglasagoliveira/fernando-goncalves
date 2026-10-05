@@ -1,0 +1,14 @@
+{
+  "title": "Fernando Gonçalves | Storyteller e Palestrante Motivacional",
+  "description": "Desde 1992, Fernando Gonçalves transforma sua história de vida em reflexão e novas atitudes. Conheça sua trajetória e palestras com o método SIMPLEX.",
+  "language": "pt-BR",
+  "icons": { "icon": "/favicon.png" },
+  "openGraph": { "image": "https://www.fernandosimplex.com.br/og-fernando.webp" },
+  "robots": {
+    "index": true
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
