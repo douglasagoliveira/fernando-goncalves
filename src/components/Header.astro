@@ -1,0 +1,280 @@
+---
+import { Image } from "astro:assets"
+import simplexLogo from "../assets/simplex-branco.png"
+import { navigation } from "../data/site"
+import Arrow from "./Arrow.astro"
+
+const current = "/" + (Astro.url.pathname.split("/")[1] ?? "")
+---
+
+<div id="top-sentinel" aria-hidden="true"></div>
+
+<header class="site-header" id="site-header">
+  <div class="site-header__inner container">
+    <a class="brand" href="/" aria-label="Fernando Gonçalves — página inicial">
+      <Image
+        src={simplexLogo}
+        alt=""
+        width={44}
+        height={44}
+        loading="eager"
+        class="brand__mark"
+        aria-hidden="true"
+      />
+      <span class="brand__text">
+        <b>Fernando Gonçalves</b>
+        <small>Storyteller · Palestrante</small>
+      </span>
+    </a>
+
+    <button
+      type="button"
+      class="menu-toggle"
+      id="menu-toggle"
+      aria-expanded="false"
+      aria-controls="primary-nav"
+    >
+      <span class="menu-toggle__label">Menu</span>
+      <span class="menu-toggle__bars" aria-hidden="true"><i></i><i></i></span>
+    </button>
+
+    <nav id="primary-nav" class="primary-nav" aria-label="Navegação principal">
+      <ul>
+        {
+          navigation.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={current === item.href ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a class="btn btn--ghost nav-cta" href="/contato">
+        Solicitar proposta <Arrow />
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  #top-sentinel {
+    position: absolute;
+    top: 0;
+    height: 1px;
+    width: 1px;
+  }
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color var(--duration-normal) var(--ease-out),
+      border-color var(--duration-normal) var(--ease-out);
+  }
+
+  /* vidro apenas quando a página rola — hierarquia, não decoração */
+  :global(.header-pinned) .site-header {
+    background: rgba(6, 13, 25, 0.72);
+    border-bottom-color: var(--hairline);
+  }
+
+  @supports (backdrop-filter: blur(1px)) {
+    :global(.header-pinned) .site-header {
+      background: rgba(6, 13, 25, 0.55);
+      backdrop-filter: blur(var(--blur-md)) saturate(150%);
+    }
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    min-height: var(--header-height);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .brand__mark {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    transition: transform var(--duration-normal) var(--ease-out);
+  }
+
+  .brand:hover .brand__mark {
+    transform: scale(1.06);
+  }
+
+  .brand__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .brand__text b {
+    font-size: 0.95rem;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.01em;
+  }
+
+  .brand__text small {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--color-faint);
+  }
+
+  .primary-nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2.4vw, 2.25rem);
+  }
+
+  .primary-nav ul {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2.2vw, 2rem);
+  }
+
+  .primary-nav a:not(.btn) {
+    position: relative;
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    padding-block: 0.35rem;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .primary-nav a:not(.btn)::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--duration-normal) var(--ease-out);
+  }
+
+  .primary-nav a:hover,
+  .primary-nav a[aria-current="page"] {
+    color: var(--color-text);
+  }
+
+  .primary-nav a:hover::after,
+  .primary-nav a[aria-current="page"]::after {
+    transform: scaleX(1);
+  }
+
+  .menu-toggle {
+    display: none;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.9rem;
+    min-height: 44px;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-full);
+    background: transparent;
+    color: var(--color-text);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+  }
+
+  .menu-toggle__bars {
+    display: grid;
+    gap: 4px;
+    width: 16px;
+  }
+
+  .menu-toggle__bars i {
+    display: block;
+    height: 1px;
+    background: currentColor;
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .menu-toggle[aria-expanded="true"] .menu-toggle__bars i:first-child {
+    transform: translateY(2.5px) rotate(45deg);
+  }
+
+  .menu-toggle[aria-expanded="true"] .menu-toggle__bars i:last-child {
+    transform: translateY(-2.5px) rotate(-45deg);
+  }
+
+  @media (max-width: 560px) {
+    .brand__text small {
+      display: none;
+    }
+
+    .brand__text b {
+      font-size: 0.85rem;
+    }
+
+    .brand__mark {
+      width: 34px;
+      height: 34px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .primary-nav {
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      width: 100%;
+      padding-block: var(--space-sm) var(--space-md);
+      order: 3;
+    }
+
+    .primary-nav ul {
+      flex-wrap: wrap;
+      gap: var(--space-sm) var(--space-md);
+    }
+
+    .site-header__inner {
+      flex-wrap: wrap;
+    }
+
+    /* Com JavaScript o menu vira painel recolhível. Sem JS, a navegação
+       permanece visível e utilizável. */
+    :global(.js) .primary-nav {
+      display: none;
+    }
+
+    :global(.js) .primary-nav.is-open {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      border-top: 1px solid var(--hairline);
+      animation: rise 260ms var(--ease-out);
+    }
+
+    :global(.js) .primary-nav.is-open ul {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-xs);
+      width: 100%;
+    }
+
+    :global(.js) .primary-nav.is-open a:not(.btn) {
+      font-size: 1.15rem;
+      padding-block: 0.5rem;
+    }
+
+    :global(.js) .menu-toggle {
+      display: inline-flex;
+    }
+  }
+</style>

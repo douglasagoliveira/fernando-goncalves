@@ -1,0 +1,46 @@
+---
+import MainLayout from "../layouts/MainLayout.astro"
+import Arrow from "../components/Arrow.astro"
+---
+
+<MainLayout
+  path="/"
+  noindex
+  title="Página não encontrada | Fernando Gonçalves"
+  description="A página que você procura não existe ou foi movida. Volte para o início e conheça as palestras de Fernando Gonçalves."
+>
+  <section class="section section--tall">
+    <div class="container not-found">
+      <p class="eyebrow"><span class="eyebrow__index">404</span><span>Página não encontrada</span></p>
+      <h1>Esse caminho <i>não existe mais.</i></h1>
+      <p class="lead">
+        O endereço pode ter mudado. Volte para o início ou fale diretamente com
+        Fernando para solicitar uma proposta.
+      </p>
+      <div class="not-found__actions">
+        <a class="btn" href="/">Voltar ao início <Arrow /></a>
+        <a class="btn btn--ghost" href="/contato">Falar com Fernando</a>
+      </div>
+    </div>
+  </section>
+</MainLayout>
+
+<style>
+  .not-found {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: flex-start;
+    min-height: 44svh;
+  }
+
+  .not-found h1 {
+    max-width: 16ch;
+  }
+
+  .not-found__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+</style>

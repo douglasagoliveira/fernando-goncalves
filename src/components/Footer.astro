@@ -1,0 +1,175 @@
+---
+import { Image } from "astro:assets"
+import simplexLogo from "../assets/simplex-branco.png"
+import { navigation, site, social } from "../data/site"
+
+const year = new Date().getFullYear()
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <Image
+          src={simplexLogo}
+          alt="SIMPLEX — Sistema Motivacional para Performances de Excelência"
+          width={96}
+          height={96}
+          loading="lazy"
+        />
+        <p class="footer-wordmark">Fernando<br />Gonçalves</p>
+        <p class="footer-claim">
+          Desde {site.since} transformando histórias de vida em inspiração para
+          novas atitudes.
+        </p>
+      </div>
+
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h2>Contato</h2>
+          <ul>
+            <li>
+              <a href={site.whatsapp} rel="noopener">
+                WhatsApp {site.phoneLabel}
+              </a>
+            </li>
+            <li>
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h2>Navegação</h2>
+          <ul>
+            {
+              navigation.map((item) => (
+                <li>
+                  <a href={item.href}>{item.label}</a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h2>Redes</h2>
+          <ul>
+            {
+              social.map((item) => (
+                <li>
+                  <a href={item.href} rel="noopener me" target="_blank">
+                    {item.label} <span>{item.handle}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© {year} {site.name} · {site.role}</p>
+      <p>Todos os direitos reservados</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--space-3xl);
+    border-top: 1px solid var(--hairline);
+    padding-block: var(--space-xl) var(--space-lg);
+    background: linear-gradient(180deg, rgba(9, 20, 38, 0), rgba(3, 8, 15, 0.6));
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr);
+    gap: var(--space-xl);
+  }
+
+  .footer-brand img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    opacity: 0.9;
+  }
+
+  .footer-wordmark {
+    margin-top: var(--space-md);
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.25rem);
+    line-height: 0.98;
+    letter-spacing: var(--tracking-display);
+    font-weight: var(--weight-light);
+  }
+
+  .footer-claim {
+    margin-top: var(--space-sm);
+    max-width: 34ch;
+    color: var(--color-faint);
+    font-size: var(--text-sm);
+  }
+
+  .footer-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.7fr) minmax(0, 1.05fr);
+    gap: var(--space-lg);
+  }
+
+  .footer-col h2 {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-faint);
+    margin-bottom: var(--space-sm);
+  }
+
+  .footer-col ul {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .footer-col a {
+    display: inline-block;
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    overflow-wrap: anywhere;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .footer-col a span {
+    color: var(--color-faint);
+  }
+
+  .footer-col a:hover {
+    color: var(--color-text);
+  }
+
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    margin-top: var(--space-xl);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--hairline);
+    font-size: var(--text-xs);
+    color: var(--color-faint);
+  }
+
+  @media (max-width: 900px) {
+    .footer-top {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-lg);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .footer-cols {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-md);
+    }
+  }
+</style>

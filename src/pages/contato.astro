@@ -1,0 +1,502 @@
+---
+import MainLayout from "../layouts/MainLayout.astro"
+import Arrow from "../components/Arrow.astro"
+import { proposalFields } from "../data/content"
+import { site, social } from "../data/site"
+
+const mailtoSubject = encodeURIComponent("Solicitação de proposta — palestra")
+const mailtoBody = encodeURIComponent(
+  [
+    "Olá, Fernando!",
+    "",
+    "Nome:",
+    "Empresa/Instituição:",
+    "Cidade:",
+    "Número estimado de participantes:",
+    "Tipo de evento:",
+    "Data desejada:",
+    "Tempo disponível:",
+    "Objetivo da palestra:",
+  ].join("\n"),
+)
+---
+
+<MainLayout path="/contato">
+  <section class="page-hero">
+    <div class="container page-hero__inner hero-animate">
+      <p class="eyebrow">
+        <span class="eyebrow__index">01</span><span>Contato</span>
+      </p>
+      <h1>
+        Sua equipe precisa de motivação? <i>Vamos conversar.</i>
+      </h1>
+      <p class="lead">
+        Se sua empresa, instituição ou organização deseja proporcionar uma
+        experiência capaz de estimular reflexão, participação e mudança de
+        atitude, envie os dados do seu evento. Fernando está disponível para
+        palestras, treinamentos, eventos e projetos motivacionais
+        personalizados.
+      </p>
+    </div>
+  </section>
+
+  <section class="section contact-section">
+    <div class="container contact">
+      {/* ------------------------------------------------------ CANAIS */}
+      <aside class="channels">
+        <div class="channel" data-reveal>
+          <span class="channel__label">WhatsApp</span>
+          <a class="channel__value" href={site.whatsapp} rel="noopener">
+            {site.phoneLabel}
+          </a>
+          <p>Resposta direta com Fernando.</p>
+        </div>
+
+        <div class="channel" data-reveal data-reveal-index="2">
+          <span class="channel__label">E-mail</span>
+          <a
+            class="channel__value"
+            href={`mailto:${site.email}?subject=${mailtoSubject}&body=${mailtoBody}`}
+          >
+            {site.email}
+          </a>
+          <p>Para propostas, convites e materiais.</p>
+        </div>
+
+        <div class="channel" data-reveal data-reveal-index="3">
+          <span class="channel__label">Redes</span>
+          <ul class="channel__social">
+            {
+              social.map((item) => (
+                <li>
+                  <a href={item.href} rel="noopener me" target="_blank">
+                    {item.label} <span>{item.handle}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="channel channel--list" data-reveal data-reveal-index="4">
+          <span class="channel__label">Para agilizar a proposta, informe</span>
+          <ul class="rule-list">
+            {proposalFields.map((field) => <li>{field}</li>)}
+          </ul>
+        </div>
+      </aside>
+
+      {/* --------------------------------------------------- FORMULÁRIO */}
+      <div class="form-card glass" data-reveal>
+        <h2>Solicitar proposta</h2>
+        <p class="form-card__hint">
+          Os campos marcados com <abbr title="obrigatório">*</abbr> são
+          obrigatórios. Ao enviar, abrimos o WhatsApp com a mensagem já
+          preenchida — você confere antes de mandar.
+        </p>
+
+        <form id="form-proposta" novalidate>
+          <div class="field">
+            <label for="nome">Nome *</label>
+            <input id="nome" name="nome" type="text" required autocomplete="name" />
+          </div>
+
+          <div class="field">
+            <label for="empresa">Empresa ou instituição *</label>
+            <input
+              id="empresa"
+              name="empresa"
+              type="text"
+              required
+              autocomplete="organization"
+            />
+          </div>
+
+          <div class="field">
+            <label for="email">E-mail para resposta</label>
+            <input id="email" name="email" type="email" autocomplete="email" />
+          </div>
+
+          <div class="field">
+            <label for="cidade">Cidade *</label>
+            <input
+              id="cidade"
+              name="cidade"
+              type="text"
+              required
+              autocomplete="address-level2"
+            />
+          </div>
+
+          <div class="field">
+            <label for="participantes">Participantes (estimativa)</label>
+            <input
+              id="participantes"
+              name="participantes"
+              type="number"
+              min="1"
+              inputmode="numeric"
+            />
+          </div>
+
+          <div class="field">
+            <label for="tipo">Tipo de evento</label>
+            <select id="tipo" name="tipo">
+              <option value="">Selecione</option>
+              <option>Palestra para colaboradores</option>
+              <option>Treinamento de equipe de vendas</option>
+              <option>Convenção ou congresso</option>
+              <option>Evento institucional</option>
+              <option>Instituição religiosa</option>
+              <option>Terceiro setor</option>
+              <option>Encontro familiar</option>
+              <option>Outro</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="data">Data desejada</label>
+            <input id="data" name="data" type="date" />
+          </div>
+
+          <div class="field">
+            <label for="tempo">Tempo disponível</label>
+            <input
+              id="tempo"
+              name="tempo"
+              type="text"
+              placeholder="Ex.: 2 horas"
+            />
+          </div>
+
+          <div class="field field--wide">
+            <label for="formato">Formato de interesse</label>
+            <select id="formato" name="formato">
+              <option value="">Ainda não sei</option>
+              <option value="essencial">Palestra essencial — a partir de 2h</option>
+              <option value="ampliada">Palestra ampliada — 3 a 4h</option>
+              <option value="completa">Experiência completa — até 6h</option>
+            </select>
+          </div>
+
+          <div class="field field--wide">
+            <label for="objetivo">Objetivo da palestra *</label>
+            <textarea id="objetivo" name="objetivo" rows="4" required></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn--accent" type="submit">
+              Enviar pelo WhatsApp <Arrow />
+            </button>
+            <a
+              class="text-link"
+              href={`mailto:${site.email}?subject=${mailtoSubject}&body=${mailtoBody}`}
+            >
+              Prefiro enviar por e-mail <Arrow />
+            </a>
+          </div>
+
+          <p class="form-feedback" id="form-feedback" role="status" hidden></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="section steps-section">
+    <div class="container">
+      <ol class="steps">
+        <li data-reveal data-reveal-index="1">
+          <span>01</span>
+          <h2>Você envia os dados</h2>
+          <p>
+            Perfil do público, objetivo, data e tempo disponível — tudo o que
+            ajuda a entender o contexto do encontro.
+          </p>
+        </li>
+        <li data-reveal data-reveal-index="2">
+          <span>02</span>
+          <h2>Fernando retorna com uma proposta</h2>
+          <p>
+            Escopo, conteúdo, programação e dinâmicas estruturados pelo método
+            SIMPLEX, de acordo com as necessidades identificadas.
+          </p>
+        </li>
+        <li data-reveal data-reveal-index="3">
+          <span>03</span>
+          <h2>A experiência acontece</h2>
+          <p>
+            Depois do encontro podem ser elaborados relatórios de participação,
+            interação e aceitação da equipe.
+          </p>
+        </li>
+      </ol>
+    </div>
+  </section>
+</MainLayout>
+
+<style>
+  .page-hero {
+    padding-top: clamp(2.5rem, 1rem + 5vw, 4.5rem);
+    padding-bottom: var(--space-lg);
+  }
+
+  .page-hero__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: flex-start;
+  }
+
+  .page-hero h1 {
+    max-width: 18ch;
+  }
+
+  .contact-section {
+    padding-top: var(--space-lg);
+  }
+
+  .contact {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 1rem + 4vw, 4.5rem);
+    align-items: start;
+  }
+
+  /* -------------------------------------------------------------- canais */
+  .channels {
+    display: grid;
+    gap: var(--space-lg);
+  }
+
+  .channel {
+    display: grid;
+    gap: 0.35rem;
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--hairline);
+  }
+
+  .channel__label {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-faint);
+  }
+
+  .channel__value {
+    font-size: var(--text-h4);
+    color: var(--color-text);
+    overflow-wrap: anywhere;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .channel__value:hover {
+    color: var(--color-accent);
+  }
+
+  .channel p {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+
+  .channel__social {
+    display: grid;
+    gap: 0.4rem;
+    margin-top: 0.25rem;
+  }
+
+  .channel__social a {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .channel__social a span {
+    color: var(--color-faint);
+  }
+
+  .channel__social a:hover {
+    color: var(--color-text);
+  }
+
+  /* --------------------------------------------------------- formulário */
+  .form-card {
+    padding: clamp(1.5rem, 1rem + 2vw, 2.75rem);
+  }
+
+  .form-card h2 {
+    font-size: var(--text-h3);
+  }
+
+  .form-card__hint {
+    margin-top: var(--space-2xs);
+    margin-bottom: var(--space-lg);
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    max-width: 52ch;
+  }
+
+  .form-card__hint abbr {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-md);
+  }
+
+  .field {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .field--wide {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--color-faint);
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    min-height: 48px;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-sm);
+    background: rgba(3, 8, 15, 0.45);
+    color: var(--color-text);
+    font-size: var(--text-sm);
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 7rem;
+  }
+
+  input:hover,
+  select:hover,
+  textarea:hover {
+    border-color: var(--hairline-strong);
+  }
+
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    border-color: var(--color-accent);
+    background: rgba(3, 8, 15, 0.7);
+  }
+
+  input:user-invalid,
+  textarea:user-invalid {
+    border-color: #ff8a8a;
+  }
+
+  select {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--color-faint) 50%),
+      linear-gradient(135deg, var(--color-faint) 50%, transparent 50%);
+    background-position:
+      calc(100% - 1.15rem) 50%,
+      calc(100% - 0.8rem) 50%;
+    background-size:
+      6px 6px,
+      6px 6px;
+    background-repeat: no-repeat;
+    padding-right: 2.5rem;
+  }
+
+  select option {
+    background: var(--navy-800);
+  }
+
+  .form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-md);
+    margin-top: var(--space-2xs);
+  }
+
+  .form-feedback {
+    grid-column: 1 / -1;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    background: var(--color-accent-soft);
+    font-size: var(--text-sm);
+    color: var(--color-text);
+  }
+
+  /* ------------------------------------------------------ próximos passos */
+  .steps-section {
+    padding-top: var(--space-lg);
+    padding-bottom: 0;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .steps li {
+    display: grid;
+    gap: var(--space-2xs);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--hairline);
+  }
+
+  .steps span {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .steps h2 {
+    font-size: var(--text-h4);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0;
+  }
+
+  .steps p {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+
+  @media (max-width: 1000px) {
+    .contact {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .steps {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-md);
+    }
+
+    .channels {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .channels {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    form {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

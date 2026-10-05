@@ -1,0 +1,79 @@
+---
+import { site, personSchema } from "../data/site"
+
+interface Props {
+  title: string
+  description: string
+  path: string
+  noindex?: boolean
+}
+
+const { title, description, path, noindex = false } = Astro.props
+const canonical = new URL(path === "/" ? "/" : path, site.url).href
+const ogImage = new URL(site.ogImage, site.url).href
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+<meta name="author" content={site.name} />
+<meta name="theme-color" content="#060d19" />
+<meta
+  name="robots"
+  content={noindex ? "noindex, follow" : "index, follow, max-image-preview:large"}
+/>
+
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/favicon.png" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<link
+  rel="preload"
+  href="/fonts/Switzer-Light.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+<link
+  rel="preload"
+  href="/fonts/Switzer-Medium.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="pt_BR" />
+<meta property="og:site_name" content={`${site.name} — ${site.role}`} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:alt" content={`Retrato de ${site.name}`} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<script
+  type="application/ld+json"
+  is:inline
+  set:html={JSON.stringify(personSchema)}
+/>
+
+{/* Marca o documento como "com JavaScript" antes da pintura, para que as
+    revelações por scroll não causem flash. Se o módulo principal não
+    carregar, a classe é removida e todo o conteúdo volta a ficar visível. */}
+<script is:inline>
+  ;(function (root) {
+    root.classList.add("js")
+    setTimeout(function () {
+      if (!root.classList.contains("js-ready")) root.classList.remove("js")
+    }, 2500)
+  })(document.documentElement)
+</script>

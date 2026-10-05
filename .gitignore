@@ -1,26 +1,23 @@
-node_modules/
+# build
 dist/
-build/
-.cache/
+.astro/
+.vercel/
+.output/
+
+# dependências
+node_modules/
+
+# ambiente e logs
 .env*
-.vite/
-vite.config.*.timestamp-*
-*.tsbuildinfo
-*-debug.log*
-logs/
 *.log
-.claude-replay.*
-.tmp-*
-/.figma/design-context/
+logs/
+*.tsbuildinfo
 
-# Platform-managed agentplat state, not project source. In the
-# client-initiated single-repo workspace layout (make's `Path: "."` spec) the
-# repo root IS the workspace root, so these land inside this repo rather than
-# beside it.
-/.plugins/
-/.opencode-skills/
+# sistema
+.DS_Store
+Thumbs.db
 
-# Local tooling and agent state
+# ferramentas locais de agentes
 .mcp.json
 .agent/
 .agents/

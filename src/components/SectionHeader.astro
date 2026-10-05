@@ -1,0 +1,72 @@
+---
+interface Props {
+  index?: string
+  eyebrow: string
+  title?: string
+  intro?: string
+  align?: "start" | "between"
+  class?: string
+}
+
+const {
+  index,
+  eyebrow,
+  title,
+  intro,
+  align = "start",
+  class: className,
+} = Astro.props
+---
+
+<header class:list={["section-header", `section-header--${align}`, className]}>
+  <p class="eyebrow" data-reveal>
+    {index && <span class="eyebrow__index">{index}</span>}
+    <span>{eyebrow}</span>
+  </p>
+  <div class="section-header__body">
+    {
+      title && (
+        <h2 data-reveal style="--reveal-delay:80ms" set:html={title} />
+      )
+    }
+    {
+      intro && (
+        <p class="lead" data-reveal style="--reveal-delay:160ms">
+          {intro}
+        </p>
+      )
+    }
+    <slot />
+  </div>
+</header>
+
+<style>
+  .section-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .section-header__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    max-width: 70ch;
+  }
+
+  .section-header--between .section-header__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: end;
+    gap: var(--space-lg);
+    max-width: none;
+  }
+
+  @media (max-width: 900px) {
+    .section-header--between .section-header__body {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+</style>

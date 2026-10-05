@@ -1,0 +1,168 @@
+/* =========================================================================
+   Movimento — CSS primeiro. O JavaScript apenas marca o elemento como
+   visível (IntersectionObserver); toda a transição acontece aqui.
+   ========================================================================= */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes draw-line {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes unmask {
+  from {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------- revelação por scroll
+   Só esconde o conteúdo quando há JavaScript (html.js). Sem JS, ou se o
+   script falhar, tudo permanece visível e legível.
+-------------------------------------------------------------------------- */
+
+.js [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity var(--duration-slow) var(--ease-emphasis),
+    transform var(--duration-slow) var(--ease-emphasis);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+/* Variante "mask": o contêiner apenas aparece; o conteúdo interno sai de um
+   leve zoom. Evita clip-path no próprio alvo, que impede o
+   IntersectionObserver de detectar o elemento. */
+.js [data-reveal="mask"] {
+  transform: none;
+}
+
+.js [data-reveal="mask"] > * {
+  transform: scale(1.05);
+  transition: transform 1100ms var(--ease-emphasis);
+}
+
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+.js [data-reveal="mask"].is-visible > * {
+  transform: none;
+}
+
+/* ------------------------------------------------------- entrada do hero */
+
+.js .hero-animate > * {
+  animation: rise 900ms var(--ease-emphasis) backwards;
+}
+
+.js .hero-animate > *:nth-child(1) {
+  animation-delay: 80ms;
+}
+.js .hero-animate > *:nth-child(2) {
+  animation-delay: 180ms;
+}
+.js .hero-animate > *:nth-child(3) {
+  animation-delay: 280ms;
+}
+.js .hero-animate > *:nth-child(4) {
+  animation-delay: 380ms;
+}
+.js .hero-animate > *:nth-child(5) {
+  animation-delay: 480ms;
+}
+
+.js .hero-figure {
+  animation: fade 1200ms var(--ease-out) backwards;
+  animation-delay: 120ms;
+}
+
+/* ------------------------------------------------------------- parallax
+   Usa animação vinculada ao scroll quando o navegador suporta — sem JS.
+-------------------------------------------------------------------------- */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) and (min-width: 901px) {
+    @keyframes drift {
+      from {
+        transform: translate3d(0, 2.2%, 0);
+      }
+      to {
+        transform: translate3d(0, -2.2%, 0);
+      }
+    }
+
+    [data-parallax] {
+      animation: drift linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+  }
+}
+
+/* --------------------------------------------------- movimento reduzido */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .js [data-reveal],
+  .js [data-reveal="mask"] > * {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --------------------------------------------- transição entre páginas */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: fade 180ms var(--ease-out) reverse;
+}
+
+::view-transition-new(root) {
+  animation: fade 320ms var(--ease-out);
+}
